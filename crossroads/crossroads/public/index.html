@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CrossRoads · Find your VIT peer group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<nav class="topbar">
+  <div class="brand">
+    <span class="brand-mark">✕</span>
+    <span class="brand-name">CrossRoads</span>
+  </div>
+  <div id="navUser" class="nav-user hidden">
+    <span class="nav-avatar" id="navAvatar">?</span>
+    <span class="nav-username" id="navUsername"></span>
+    <button id="logoutBtn" class="ghost-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- AUTH: Sign in / Sign up -->
+  <div id="authSection" class="card auth-card hidden">
+    <div class="auth-hero">
+      <h1>Cross paths with your people.</h1>
+      <p class="subtitle">Sign in to build your profile and get matched with VIT classmates who share your interests, subjects, and hostel block.</p>
+    </div>
+
+    <div class="tabs">
+      <button type="button" class="tab-btn active" data-tab="signin">Sign In</button>
+      <button type="button" class="tab-btn" data-tab="signup">Sign Up</button>
+    </div>
+
+    <form id="signinForm" class="auth-form">
+      <label>Email</label>
+      <input type="email" id="signinEmail" required placeholder="you@vitstudent.ac.in" autocomplete="email" />
+      <label>Password</label>
+      <input type="password" id="signinPassword" required placeholder="••••••••" autocomplete="current-password" />
+      <p class="form-error hidden" id="signinError"></p>
+      <button type="submit" class="primary-btn full">Sign In</button>
+    </form>
+
+    <form id="signupForm" class="auth-form hidden">
+      <label>Full Name</label>
+      <input type="text" id="signupName" required placeholder="e.g. Priya Sharma" autocomplete="name" />
+      <label>Email</label>
+      <input type="email" id="signupEmail" required placeholder="you@vitstudent.ac.in" autocomplete="email" />
+      <label>Password</label>
+      <input type="password" id="signupPassword" required placeholder="At least 6 characters" autocomplete="new-password" />
+      <p class="form-error hidden" id="signupError"></p>
+      <button type="submit" class="primary-btn full">Create Account</button>
+    </form>
+  </div>
+
+  <!-- DASHBOARD: two clickable icon destinations -->
+  <div id="dashboardSection" class="hidden">
+    <div class="dashboard-hero">
+      <h1>Welcome back, <span id="dashboardName">there</span> 👋</h1>
+      <p class="subtitle">Where do you want to go?</p>
+    </div>
+    <div class="dashboard-grid">
+      <button type="button" id="goProfileBtn" class="dash-tile">
+        <span class="dash-icon">🪪</span>
+        <span class="dash-title">My Profile</span>
+        <span class="dash-desc" id="profileTileDesc">View or edit your details</span>
+      </button>
+      <button type="button" id="goPeersBtn" class="dash-tile">
+        <span class="dash-icon">🧭</span>
+        <span class="dash-title">Find My Peers</span>
+        <span class="dash-desc" id="peersTileDesc">See your top matches</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 1: Profile Form (also reused for Edit) -->
+  <div id="formSection" class="card hidden">
+    <button type="button" class="back-btn" id="backFromForm">← Dashboard</button>
+    <h2 id="formTitle">Complete Your Profile</h2>
+    <p class="subtitle small" id="formSubtitle">A few details so we can find your best-matching peers.</p>
+    <form id="profileForm">
+
+      <label>Gender</label>
+      <div class="gender-options" id="genderOptions">
+        <label class="pill-radio">
+          <input type="radio" name="gender" value="Male" />
+          <span>Male</span>
+        </label>
+        <label class="pill-radio">
+          <input type="radio" name="gender" value="Female" />
+          <span>Female</span>
+        </label>
+      </div>
+
+      <label>Course / Branch</label>
+      <select id="course" required>
+        <option value="">-- Select course --</option>
+      </select>
+
+      <label>Semester</label>
+      <select id="semester" required disabled>
+        <option value="">-- Select course first --</option>
+      </select>
+
+      <div id="subjectsGroup" class="hidden">
+        <label>Subjects Chosen (comma separated)</label>
+        <input type="text" id="subjects" placeholder="e.g. Data Structures, DBMS, OS" />
+        <small>Only relevant from 2nd semester onward.</small>
+      </div>
+
+      <label>City</label>
+      <input type="text" id="city" placeholder="e.g. Vellore" />
+
+      <label>Hostel Block</label>
+      <select id="hostelBlock">
+        <option value="">-- Day Scholar / Not applicable --</option>
+      </select>
+
+      <label>Interests (comma separated)</label>
+      <input type="text" id="interests" required placeholder="e.g. Machine Learning, Cricket, Web Dev" />
+
+      <label>Clubs / Chapters (comma separated)</label>
+      <input type="text" id="clubs" placeholder="e.g. IEEE, Coding Club, Music Society" />
+
+      <button type="submit" id="formSubmitBtn" class="primary-btn full">Save Profile &amp; Find Peers</button>
+      <p class="form-error hidden" id="profileError"></p>
+    </form>
+  </div>
+
+  <!-- STEP 2: Find My Peers -->
+  <div id="resultsSection" class="card hidden">
+    <button type="button" class="back-btn" id="backFromResults">← Dashboard</button>
+    <div class="results-header">
+      <div>
+        <h2>Find My Peers</h2>
+        <p class="welcome-text" id="welcomeText"></p>
+      </div>
+      <button id="editProfileBtn" class="secondary small">Edit Profile</button>
+    </div>
+
+    <div class="filters">
+      <h3>Filters</h3>
+      <div class="filter-row">
+        <label class="checkbox-label"><input type="checkbox" id="filterSameCity" /> Same City</label>
+        <label class="checkbox-label"><input type="checkbox" id="filterOtherCity" /> Other City</label>
+        <label class="checkbox-label"><input type="checkbox" id="filterHostel" /> Same Hostel Block</label>
+        <label class="checkbox-label"><input type="checkbox" id="filterInterests" /> Shared Interests Only</label>
+        <label class="checkbox-label"><input type="checkbox" id="filterSeniors" /> Seniors Only</label>
+      </div>
+      <button id="applyFiltersBtn" class="small">Apply Filters</button>
+      <button id="clearFiltersBtn" class="secondary small">Clear Filters</button>
+    </div>
+
+    <h3 class="matches-heading">Your Matches</h3>
+    <div id="matchesList"></div>
+  </div>
+
+</div>
+
+<!-- CHAT MODAL -->
+<div id="chatOverlay" class="chat-overlay hidden">
+  <div class="chat-panel">
+    <div class="chat-header">
+      <div>
+        <div class="chat-peer-name" id="chatPeerName"></div>
+        <div class="chat-peer-email" id="chatPeerEmail"></div>
+      </div>
+      <button type="button" class="chat-close" id="chatCloseBtn">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <form id="chatForm" class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Type a message…" maxlength="2000" autocomplete="off" required />
+      <button type="submit" class="primary-btn chat-send-btn">Send</button>
+    </form>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

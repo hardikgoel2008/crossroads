@@ -1,0 +1,19 @@
+{
+  "name": "crossroads",
+  "version": "2.0.0",
+  "description": "CrossRoads — find your peer group at VIT. Sign up, build a profile, and get matched with classmates who share your interests, subjects, and hostel block.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}
